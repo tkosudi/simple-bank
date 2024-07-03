@@ -35,4 +35,4 @@ This API will be built with Go, PostgreSQL, SQLC, Docker, Kubernetes, Gin, JWT, 
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/your-username/your-repo.git
+   git clone https://github.com/tkosudi/simple-bank.git
