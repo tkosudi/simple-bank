@@ -6,10 +6,13 @@ import (
 	"time"
 )
 
-var alphabet = "abcdefghijklmnopqrstuvxz"
+var (
+	alphabet = "abcdefghijklmnopqrstuvxz"
+	r        *rand.Rand
+)
 
 func init() {
-	rand.Seed(time.Now().UnixNano())
+	r = rand.New(rand.NewSource(time.Now().UnixNano()))
 }
 
 func RandomInt(min, max int64) int64 {
@@ -39,5 +42,5 @@ func RandomMoney() int64 {
 func RandomCurrency() string {
 	currencies := []string{"EUR", "USD", "BRL"}
 	n := len(currencies)
-	return currencies[rand.Intn(n)]
+	return currencies[r.Intn(n)]
 }
