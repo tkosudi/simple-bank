@@ -38,7 +38,6 @@ func TestCreateEntry(t *testing.T) {
 func TestGetEntry(t *testing.T) {
 	account := createRandomAccount(t)
 
-	println(t)
 	entry1 := createRandomEntry(t, account.ID)
 	entry2, err := testQueries.GetEntry(context.Background(), entry1.ID)
 	require.NoError(t, err)
@@ -73,7 +72,6 @@ func TestListEntries(t *testing.T) {
 	}
 
 	// ERROR CASE: invalid query
-
 	wrongArg := ListEntriesParams{
 		AccountID: 0,
 		Limit:     -1,
