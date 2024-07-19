@@ -71,4 +71,15 @@ func TestListEntries(t *testing.T) {
 	for _, entry := range entries {
 		require.Equal(t, account.ID, entry.AccountID)
 	}
+
+	// ERROR CASE: invalid query
+
+	wrongArg := ListEntriesParams{
+		AccountID: 0,
+		Limit:     -1,
+		Offset:    -1,
+	}
+	_, err = testQueries.ListEntries(context.Background(), wrongArg)
+	require.Error(t, err)
+
 }
