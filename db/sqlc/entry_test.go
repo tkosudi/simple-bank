@@ -82,4 +82,18 @@ func TestListEntries(t *testing.T) {
 	_, err = testQueries.ListEntries(context.Background(), wrongArg)
 	require.Error(t, err)
 
+	// Simulate database query error
+	testQueries.db.ExecContext(context.Background(), "DROP TABLE entries")
+	_, err = testQueries.ListEntries(context.Background(), arg)
+	require.Error(t, err)
+
+	// Restore the database
+	testQueries.db.ExecContext(context.Background(), `
+		CREATE TABLE entries (
+			id SERIAL PRIMARY KEY,
+			account_id BIGINT NOT NULL,
+			amount BIGINT NOT NULL,
+			created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
+		)
+	`)
 }
