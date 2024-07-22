@@ -19,4 +19,6 @@ sqlc:
 test:
 	go test -v -cover ./...
 
+resetdb: dropdb createdb migrateup	
+
 .PHONY: postgres createdb dropdb migrateup migratedown sqlc test
