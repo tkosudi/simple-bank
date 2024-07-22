@@ -4,6 +4,8 @@ import (
 	"math/rand"
 	"strings"
 	"time"
+
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 var (
@@ -43,4 +45,8 @@ func RandomCurrency() string {
 	currencies := []string{"EUR", "USD", "BRL"}
 	n := len(currencies)
 	return currencies[r.Intn(n)]
+}
+
+func ConvertTimestamptzToTime(tz pgtype.Timestamptz) time.Time {
+	return tz.Time
 }
