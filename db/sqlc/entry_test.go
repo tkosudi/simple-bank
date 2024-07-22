@@ -71,30 +71,31 @@ func TestListEntries(t *testing.T) {
 	require.Len(t, entries, 5)
 
 	for _, entry := range entries {
-		require.Equal(t, account.ID, entry.AccountID)
+		require.NotEmpty(t, entry)
+		require.Equal(t, arg.AccountID, entry.AccountID)
 	}
 
-	// // ERROR CASE: invalid query
-	// wrongArg := ListEntriesParams{
-	// 	AccountID: 0,
-	// 	Limit:     -1,
-	// 	Offset:    -1,
-	// }
-	// _, err = testQueries.ListEntries(context.Background(), wrongArg)
-	// require.Error(t, err)
+	// ERROR CASE: invalid query
+	wrongArg := ListEntriesParams{
+		AccountID: 0,
+		Limit:     -1,
+		Offset:    -1,
+	}
+	_, err = testQueries.ListEntries(context.Background(), wrongArg)
+	require.Error(t, err)
 
-	// // Simulate database query error
-	// testQueries.db.ExecContext(context.Background(), "DROP TABLE entries")
-	// _, err = testQueries.ListEntries(context.Background(), arg)
-	// require.Error(t, err)
+	// Simulate database query error
+	testQueries.db.Exec(context.Background(), "DROP TABLE entries")
+	_, err = testQueries.ListEntries(context.Background(), arg)
+	require.Error(t, err)
 
-	// // Restore the database
-	// testQueries.db.ExecContext(context.Background(), `
-	// 	CREATE TABLE entries (
-	// 		id SERIAL PRIMARY KEY,
-	// 		account_id BIGINT NOT NULL,
-	// 		amount BIGINT NOT NULL,
-	// 		created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
-	// 	)
-	// `)
+	// Restore the database
+	testQueries.db.Exec(context.Background(), `
+		CREATE TABLE entries (
+			id SERIAL PRIMARY KEY,
+			account_id BIGINT NOT NULL,
+			amount BIGINT NOT NULL,
+			created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
+		)
+	`)
 }
