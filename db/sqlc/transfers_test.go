@@ -26,6 +26,9 @@ func createRandomTransfer(t *testing.T, fromAccountID int64, toAccountID int64) 
 	require.Equal(t, arg.ToAccountID, transfer.ToAccountID)
 	require.Equal(t, arg.Amount, transfer.Amount)
 
+	require.NotZero(t, transfer.ID)
+	require.NotZero(t, transfer.CreatedAt)
+
 	return transfer
 }
 
@@ -73,6 +76,8 @@ func TestListTransfers(t *testing.T) {
 	require.Len(t, transfers, 5)
 
 	for _, transfer := range transfers {
+		require.NotEmpty(t, transfer)
 		require.Equal(t, transfer.FromAccountID, account1.ID)
+		require.True(t, transfer.FromAccountID == account1.ID || transfer.ToAccountID == account1.ID)
 	}
 }
