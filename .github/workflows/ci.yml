@@ -46,14 +46,6 @@ jobs:
         sudo mv migrate /usr/bin/migrate
         which migrate
 
-    - name: Wait for Postgres to be ready
-      run: |
-        for i in {1..10}; do
-          pg_isready -h postgres -p 5432 -U root && break
-          echo "Postgres not ready yet... waiting"
-          sleep 5
-        done
-
     - name: Run Migration
       run: make migrateup
 
