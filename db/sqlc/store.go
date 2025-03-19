@@ -14,8 +14,8 @@ type Store struct {
 	db *pgxpool.Pool
 }
 
-// NewsStore creates a new Store
-func NewsStore(db *pgxpool.Pool) *Store {
+// NewStore creates a new Store
+func NewStore(db *pgxpool.Pool) *Store {
 	return &Store{
 		db:      db,
 		Queries: New(db),
@@ -33,7 +33,7 @@ func (store *Store) execTx(ctx context.Context, fn func(*Queries) error) error {
 	err = fn(q)
 	if err != nil {
 		if rbErr := tx.Rollback(ctx); rbErr != nil {
-			return fmt.Errorf("tx err: %v, rb err: %v", err, rbErr)
+			return fmt.Errorf("tx err: %w, rb err: %v", err, rbErr)
 		}
 		return err
 	}
