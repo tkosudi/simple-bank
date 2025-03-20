@@ -6,6 +6,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -21,7 +22,14 @@ func TestMain(m *testing.M) {
 
 	dbSource := getDBSource()
 
-	testDB, err = pgxpool.New(context.Background(), dbSource)
+	config, err := pgxpool.ParseConfig(dbSource)
+	if err != nil {
+		log.Fatal("Cannot parse config: ", err)
+	}
+
+	config.ConnConfig.DefaultQueryExecMode = pgx.QueryExecModeSimpleProtocol
+
+	testDB, err = pgxpool.NewWithConfig(context.Background(), config)
 	if err != nil {
 		log.Fatal("cannot connect to db:", err)
 	}

@@ -15,7 +15,6 @@ const (
 )
 
 func main() {
-
 	conn, err := pgxpool.New(context.Background(), dbSource)
 	if err != nil {
 		log.Fatal("cannot connect to db:", err)
@@ -23,6 +22,7 @@ func main() {
 
 	store := db.NewStore(conn)
 	server := api.NewServer(store)
+
 	err = server.Start(serverAddress)
 	if err != nil {
 		log.Fatal("cannot start server:", err)
